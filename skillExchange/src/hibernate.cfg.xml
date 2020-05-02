@@ -23,6 +23,7 @@
         <mapping class="publishPage.Model.publishAreaBean"/>
         <mapping class="publishPage.Model.publishCityBean"/>
         <mapping class="publishPage.Model.publishSelectBean"/>
+        <mapping class="comment.bean.CommentBean"/>
         
 
         
