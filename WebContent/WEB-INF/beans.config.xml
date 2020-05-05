@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="tw.leonchen"/>
+    
+    <bean id="sqlserverdataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+       <property name="jndiName" value="java:comp/env/jndiJdbcConnSQLServer/OrderSystem"/>
+    </bean>
+    
+    <bean id="sessionFactory" destroy-method="destroy" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+       <property name="dataSource" ref="sqlserverdataSource"/>
+       <property name="configLocation">
+           <value>classpath:hibernate.cfg.xml</value>
+       </property>
+    </bean>
+    
+    <bean id="houseBeanDao" class="tw.leonchen.model.HouseBeanDAO">
+       <constructor-arg ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="houseBeanService" class="tw.leonchen.model.HouseBeanService">
+       <constructor-arg ref="houseBeanDao"/>
+    </bean>
+    
+    <!-- 
+    <bean id="sqlserverdataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+       <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+       <property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=LeonPower"/>
+       <property name="username" value="scott"/>
+       <property name="password" value="tiger"/>
+    </bean>
+     -->
+    <!-- 
+    <bean id="houseDao" class="tw.leonchen.model.HouseDAO">
+       <constructor-arg ref="sqlserverdataSource"/>
+    </bean>
+    
+    <bean id="houseService" class="tw.leonchen.model.HouseService">
+       <constructor-arg ref="houseDao"/>
+    </bean>
+    -->
+
+	<bean id="loginDao1" class="tw.leonchen.model.LoginDAO" 
+	      init-method="init" destroy-method="destroy"
+	      scope="singleton"/>
+
+	<bean id="loginService1" class="tw.leonchen.model.LoginService">
+		<constructor-arg ref="loginDao1" />
+	</bean>
+
+	<bean id="loginService2" class="tw.leonchen.model.LoginService">
+		<property name="loginDao" ref="loginDao1"></property>
+	</bean>
+
+	<bean id="person1" class="tw.leonchen.model.Person">
+		<property name="name" value="minions" />
+		<property name="address" value="underground" />
+	</bean>
+
+	<bean id="person2" class="tw.leonchen.model.Person">
+		<constructor-arg index="0" value="jack" />
+		<constructor-arg index="1" value="island" />
+	</bean>
+
+	<bean id="person3" class="tw.leonchen.model.Person" p:name="scott"
+		p:address="zoo" />
+
+	<bean id="result" class="java.lang.String">
+		<constructor-arg value="dusty" />
+	</bean>
+
+	<bean id="person4" class="tw.leonchen.model.Person"
+		p:name-ref="result" p:address="Desert" />
+
+	<bean id="truck1" class="tw.leonchen.model.TruckBeanStaticFactory" factory-method="getTruckBean">
+		<constructor-arg value="1"></constructor-arg>
+	</bean>
+	
+	<bean id="truck2" class="tw.leonchen.model.TruckBeanStaticFactory" factory-method="getTruckBean">
+		<constructor-arg value="2"></constructor-arg>
+	</bean>
+	
+	<bean id="truckBeanFactory" class="tw.leonchen.model.TruckBeanFactory">
+	    <property name="map">
+	       <map>
+	          <entry key="1">
+	             <bean class="tw.leonchen.model.TruckBean">
+	                <property name="id" value="5"/>
+	                <property name="brand" value="owl"/>
+	             </bean>
+	          </entry>
+	          <entry key="2">
+	             <bean class="tw.leonchen.model.TruckBean">
+	                <property name="id" value="6"/>
+	                <property name="brand" value="goose"/>
+	             </bean>
+	          </entry>
+	       </map>
+	    </property>
+	</bean>
+
+    <bean id="truck3" factory-bean="truckBeanFactory" factory-method="getTruckBean">
+        <constructor-arg value="1"></constructor-arg>
+    </bean>
+    
+    <bean id="truck4" factory-bean="truckBeanFactory" factory-method="getTruckBean">
+        <constructor-arg value="2"></constructor-arg>
+    </bean>
+
+    <bean id="props" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+       <property name="location">
+           <value>classpath:tree.properties</value>
+       </property>
+    </bean>
+
+</beans>
