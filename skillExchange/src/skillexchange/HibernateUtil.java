@@ -17,7 +17,7 @@ public class HibernateUtil {
 	public static SessionFactory getSessionFactory() {
 		return factory;
 	}
-	
+//	test encoding
 	public static void closeSessionFactory() {
 		if(factory!=null) {
 			factory.close();
