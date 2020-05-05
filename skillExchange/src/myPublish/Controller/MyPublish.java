@@ -37,6 +37,7 @@ public class MyPublish extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 //        test2
+		//test jamie
 		request.setCharacterEncoding("UTF-8");
 		httpSession = request.getSession();
 		List<MyPublishBean> mylist;
