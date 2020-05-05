@@ -36,6 +36,7 @@ public class MyPublish extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//test
 
 		request.setCharacterEncoding("UTF-8");
 		httpSession = request.getSession();
